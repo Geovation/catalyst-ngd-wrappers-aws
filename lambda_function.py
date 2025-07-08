@@ -1,4 +1,4 @@
-# Test for deployment
+# Test for deployment 2
 import boto3
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
