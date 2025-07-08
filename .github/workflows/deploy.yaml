@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt -t dependencies
 
       - name: Zip Dependencies
-        run: zip -j lambda_deployment.zip ./dependencies
+        run: zip -j lambda_deployment.zip dependencies
 
       - name: And Lambda Function Code to Zip
         run: zip -j lambda_deployment.zip ./lambda-function.py
