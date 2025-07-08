@@ -26,6 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt -t dependencies
 
+      - name: List Dependencies
+        run: ls -la dependencies
+
       - name: Zip Dependencies
         run: zip -j lambda_deployment.zip dependencies
 
