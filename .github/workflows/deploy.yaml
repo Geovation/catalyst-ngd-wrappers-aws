@@ -33,7 +33,7 @@ jobs:
         run: zip lambda_deployment.zip dependencies
 
       - name: And Lambda Function Code to Zip
-        run: zip lambda_deployment.zip lambda-function.py
+        run: zip lambda_deployment.zip lambda_function.py
 
       - name: And schemas.py Function Code to Zip
         run: zip lambda_deployment.zip schemas.py
