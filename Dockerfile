@@ -9,6 +9,11 @@ RUN yum update -y && \
 # Create a directory for the Lambda function
 WORKDIR /lambda
 
+COPY requirements.txt .
+
+# Install the required Python packages to the target directory
+RUN pip3 install -r requirements.txt --target . --exclude requests
+
 COPY local_packages/. /lambda/
 
 # Copy all Python files into the container

@@ -25,7 +25,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -t local_packages
+          pip install requests==2.32.4 -t local_packages
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
