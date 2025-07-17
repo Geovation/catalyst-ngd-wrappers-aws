@@ -27,17 +27,26 @@ jobs:
           pip install -r requirements.txt -t dependencies
 
       - name: List Dependencies
-        run: ls -la .
+        run: ls -la dependencies
 
-      - name: Zip Everything
-        run: zip lambda_deployment.zip .
+      - name: Zip Dependencies
+        run: zip -r lambda_deployment.zip dependencies
+
+      - name: And Lambda Function Code to Zip
+        run: zip lambda_deployment.zip lambda_function.py
+
+      - name: And schemas.py Function Code to Zip
+        run: zip lambda_deployment.zip schemas.py
+
+      - name: And utils.py Function Code to Zip
+        run: zip lambda_deployment.zip utils.py
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
+          aws-region: -west-2
 
       - name: Update Lambda Function
         run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda_deployment.zip
