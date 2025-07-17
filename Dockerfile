@@ -3,7 +3,7 @@ FROM amazonlinux:2
 
 # Install Python and pip
 RUN yum update -y && \
-    yum install -y python3 python3-pip && \
+    yum install -y python3 python3-pip git && \
     yum clean all
 
 # Create a directory for the Lambda function
