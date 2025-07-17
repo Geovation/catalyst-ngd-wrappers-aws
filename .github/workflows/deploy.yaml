@@ -14,10 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Create dependencies directory
+        run: mkdir -p local_packages
+
       - name: Install Dependencies
         run:
           pip install --upgrade pip
-          mkdir -p local_packages
           pip install -r requirements.txt -t local_packages/
 
       - name: Checkout code
