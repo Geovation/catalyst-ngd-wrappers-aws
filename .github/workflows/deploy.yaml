@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - main
+      - bug/shapely-docker
 env:
   PYTHON_VERSION: '3.11'  # Specify the Python version you want to use
 
@@ -10,30 +10,22 @@ jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Python version
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      - name: Create dependencies directory
-        run: mkdir -p dependencies
-
-      - name: Install Dependencies
+      - name: Build Docker image
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt -t dependencies
+          docker build -t my-lambda-image .
 
-      - name: Package Dependencies into Lambda Deployment Zip
+      - name: Create ZIP Deployment Package
         run: |
-          cd dependencies
-          zip -r ../lambda_deployment.zip .  # Zip the contents, not the directory
-          cd ..
-
-      - name: Add Lambda Function Code to Zip
-        run: zip lambda_deployment.zip lambda_function.py schemas.py utils.py
+          mkdir -p output
+          docker run --rm -v $(pwd)/output:/output my-lambda-image cp -r . /output/
+          cd output
+          zip -r lambda-deployment-package.zip .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -43,4 +35,4 @@ jobs:
           aws-region: eu-west-2
 
       - name: Update Lambda Function
-        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda_deployment.zip
+        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=output/lambda-deployment-package.zip
