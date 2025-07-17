@@ -10,9 +10,14 @@ jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install Dependencies
         run:
           pip install --upgrade pip
+          mkdir -p local_packages
           pip install -r requirements.txt -t local_packages/
 
       - name: Checkout code
