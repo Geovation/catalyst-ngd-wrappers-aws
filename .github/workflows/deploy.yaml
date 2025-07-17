@@ -35,4 +35,4 @@ jobs:
           aws-region: eu-west-2
 
       - name: Update Lambda Function
-        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=output/lambda-deployment-package.zip
+        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://output/lambda-deployment-package.zip
