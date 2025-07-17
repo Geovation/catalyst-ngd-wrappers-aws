@@ -24,25 +24,10 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -t dependencies
-
-      - name: Moving into dependencies directory
-        run: cd dependencies
-
-      - name: Zip Dependencies
-        run: zip -r ../lambda_deployment.zip .
-
-      - name: Moving out of dependencies directory
-        run: cd ..
+          pip install -r requirements.txt -t .
 
       - name: And Lambda Function Code to Zip
-        run: zip lambda_deployment.zip lambda_function.py
-
-      - name: And schemas.py Function Code to Zip
-        run: zip lambda_deployment.zip schemas.py
-
-      - name: And utils.py Function Code to Zip
-        run: zip lambda_deployment.zip utils.py
+        run: zip lambda_deployment.zip .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
