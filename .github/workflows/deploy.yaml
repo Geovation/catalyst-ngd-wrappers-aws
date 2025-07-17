@@ -29,17 +29,8 @@ jobs:
       - name: List Dependencies
         run: ls -la dependencies
 
-      - name: Zip Dependencies
-        run: zip lambda_deployment.zip dependencies
-
-      - name: And Lambda Function Code to Zip
-        run: zip lambda_deployment.zip lambda_function.py
-
-      - name: And schemas.py Function Code to Zip
-        run: zip lambda_deployment.zip schemas.py
-
-      - name: And utils.py Function Code to Zip
-        run: zip lambda_deployment.zip ./utils.py
+      - name: Zip Everything
+        run: zip lambda_deployment.zip .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
