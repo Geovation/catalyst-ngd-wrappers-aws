@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create dependencies directory
+      - name: Create local_packages directory
         run: mkdir -p local_packages
 
       - name: Install Dependencies
