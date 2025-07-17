@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt -t dependencies
 
       - name: List Dependencies
-        run: ls -la dependencies
+        run: ls -la .
 
       - name: Zip Everything
         run: zip lambda_deployment.zip .
