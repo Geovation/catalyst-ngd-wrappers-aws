@@ -14,7 +14,7 @@ COPY requirements.txt .
 # Install the required Python packages to the target directory
 RUN pip3 install -r requirements.txt --target .
 
-COPY local_packages/. .
+# COPY local_packages/. .
 
 # Copy all Python files into the container
 COPY lambda_function.py .
