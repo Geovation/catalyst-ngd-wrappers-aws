@@ -13,7 +13,6 @@ jobs:
       - name: Install Dependencies
         run:
           pip install --upgrade pip
-          mkdir local_packages
           pip install -r requirements.txt -t local_packages/
 
       - name: Checkout code
