@@ -4,7 +4,7 @@ on:
     branches:
       - bug/python-docker
 env:
-  PYTHON_VERSION: '3.11'  # Specify the Python version you want to use
+  PYTHON_VERSION: '3.9'  # Specify the Python version you want to use
 
 jobs:
   deploy_lambda:
