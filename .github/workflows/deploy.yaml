@@ -19,6 +19,9 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t my-lambda-image .
+          docker create --name temp-container your-image-name
+          docker cp temp-container:/lambda.zip ./lambda.zip
+          docker rm temp-container
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
