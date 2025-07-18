@@ -1,4 +1,4 @@
-requests==2.32.4
+requests==2.18.
 shapely==2.1.1
 marshmallow==3.24.1
 flask-marshmallow==1.3.0
