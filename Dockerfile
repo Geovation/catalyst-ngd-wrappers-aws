@@ -7,7 +7,8 @@ ADD requirements.txt /tmp
 RUN python -m pip install --upgrade pip
 RUN pip install --quiet -t /lambda -r /tmp/requirements.txt \
     && find /lambda -type d | xargs chmod ugo+rx \
-    && find /lambda -type f | xargs chmod ugo+r
+    && find /lambda -type f | xargs chmod ugo+r \
+    && cat /tmp/requirements.txt
 
 # Add your source code
 ADD lambda_function.py /lambda/
