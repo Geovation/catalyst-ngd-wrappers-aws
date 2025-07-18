@@ -2,6 +2,9 @@ FROM python:3.6
 RUN apt-get update && apt-get install -y zip
 WORKDIR /lambda
 
+# Install git to clone the repository
+RUN apt-get update && apt-get install -y git && apt-get clean
+
 # Add the requiremts
 ADD requirements.txt /tmp
 RUN python -m pip install --upgrade pip
