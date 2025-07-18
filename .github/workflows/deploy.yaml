@@ -19,7 +19,7 @@ jobs:
       - name: Build Docker image and extract lambda.zip
         run: |
           docker build -t my-lambda-image .
-          docker ID=$(docker create my-lambda /bin/true)
+          ID=$(docker create my-lambda /bin/true)
           docker cp $ID:/ .
 
       - name: Configure AWS Credentials
