@@ -1,3 +1,4 @@
+legacy_cgi==2.6.3
 shapely==1.8.5.post1
 marshmallow==3.14.1
 aws_lambda_typing==2.20.0
