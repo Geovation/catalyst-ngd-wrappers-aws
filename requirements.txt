@@ -1,6 +1,6 @@
-shapely==2.0.3
 marshmallow==3.0.0b11
 aws_lambda_typing==2.20.0
 boto3==1.33.13
 requests==2.31.0
 git+https://github.com/Geovation/catalyst-ngd-wrappers-python
+shapely==2.0.3
