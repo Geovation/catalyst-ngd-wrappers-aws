@@ -1,19 +1,25 @@
-# Use Amazon Linux 2 as the base image
 FROM amazonlinux:2
 
-# Install Python and pip
-RUN yum update -y && \
-    yum install -y python3 python3-pip git && \
-    yum clean all
+# 1) Install build tools, Python dev headers, GEOS C library
+RUN yum update -y \
+ && yum install -y \
+      python3 \
+      python3-devel \
+      python3-pip \
+      gcc \
+      geos \
+      geos-devel \
+      zip \
+ && yum clean all
 
+WORKDIR /lambda
+
+# 2) Upgrade pip and install Python deps into /lambda
 COPY requirements.txt .
+RUN pip3 install --upgrade pip \
+ && pip3 install -r requirements.txt --target .
 
-# Install the required Python packages to the target directory
-RUN pip3 install -r requirements.txt --target /lambda/packages
-
-# COPY local_packages/. .
-
-# Copy all Python files into the container
+# 3) Copy your function code
 COPY lambda_function.py .
 COPY schemas.py .
 COPY utils.py .
