@@ -16,7 +16,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build Docker image
+      - name: Build Docker image and extract lambda.zip
         run: |
           docker build -t my-lambda-image .
           docker create --name temp-container your-image-name
