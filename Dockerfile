@@ -12,6 +12,7 @@ WORKDIR /lambda
 COPY requirements.txt .
 
 # Install the required Python packages to the target directory
+RUN sudo apt install libgeos-dev
 RUN pip3 install -r requirements.txt --target .
 
 # COPY local_packages/. .
