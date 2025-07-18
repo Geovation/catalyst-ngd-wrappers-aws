@@ -3,13 +3,14 @@ FROM amazonlinux:2
 # 1) Install build tools, Python dev headers, GEOS C library
 RUN yum update -y \
  && yum install -y \
-      python3 \
-      python3-devel \
-      python3-pip \
-      gcc \
-      geos \
-      geos-devel \
-      zip \
+    git \
+    python3 \
+    python3-devel \
+    python3-pip \
+    gcc \
+    geos \
+    geos-devel \
+    zip \
  && yum clean all
 
 WORKDIR /lambda
