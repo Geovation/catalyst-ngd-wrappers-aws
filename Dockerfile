@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 # Add the requiremts
 ADD requirements.txt /tmp
 
-
 RUN python -m venv /lambda/venv
 # ENV PATH="/lambda/venv/bin:$PATH"
 RUN source /lambda/venv/bin/activate
@@ -17,20 +16,17 @@ RUN pip install setuptools --upgrade
 RUN pip install -r /tmp/requirements.txt
 
 RUN pip install git+https://github.com/Geovation/catalyst-ngd-wrappers-python.git@0.1.0
-RUN pip install --quiet -r /tmp/requirements.txt \
-    && find /lambda -type d | xargs chmod ugo+rx \
-    && find /lambda -type f | xargs chmod ugo+r \
-    && cat /tmp/requirements.txt
+RUN pip install --quiet -r /tmp/requirements.txt
 
 # Add your source code
-ADD lambda_function.py /lambda/
-ADD schemas.py /lambda/
-ADD utils.py /lambda/
-RUN find /lambda -type d | xargs chmod ugo+rx \
-    && find /lambda -type f | xargs chmod ugo+r
+ADD lambda_function.py
+ADD schemas.py
+ADD utils.py
+RUN find -type d | xargs chmod ugo+rx \
+    && find -type f | xargs chmod ugo+r
 
 # compile the lot.
-RUN python -m compileall -q /lambda
+RUN python -m compileall -q .
 
 RUN zip --quiet -9r /lambda.zip .
 
