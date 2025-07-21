@@ -44,7 +44,6 @@ jobs:
         run: |
           zip -u lambda_deployment.zip forlambda.zip
           zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
-          zip -u lambda_deployment.zip ./forlambda
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
