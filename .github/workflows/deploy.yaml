@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - main
+      - bug/shapely-install
 env:
   PYTHON_VERSION: '3.11'  # Specify the Python version you want to use
 
