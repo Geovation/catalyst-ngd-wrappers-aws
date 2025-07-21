@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 # Add the requiremts
 ADD requirements.txt /tmp
 
-RUN python -m venv /lambda/venv
+RUN python -m venv .venv
 # ENV PATH="/lambda/venv/bin:$PATH"
-RUN source /lambda/venv/bin/activate
+RUN source .venv/bin/activate
 RUN python -m pip install --upgrade pip
 RUN pip install setuptools --upgrade
 RUN pip install -r /tmp/requirements.txt
