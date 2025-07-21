@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 # Add the requiremts
 ADD requirements.txt /tmp
 RUN python -m pip install --upgrade pip
+RUN pip install setuptools --upgrade
 RUN pip install https://github.com/Geovation/catalyst-ngd-wrappers-python/archive/refs/tags/0.1.0.zip
 RUN pip install --quiet -t /lambda/ -r /tmp/requirements.txt \
     && find /lambda -type d | xargs chmod ugo+rx \
