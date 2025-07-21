@@ -27,6 +27,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install shapely -t ./forlambda/venv/lib/python3.6/site-packages/
           pip install -r ../requirements.txt
+      
+      - name: Save forlambda artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: forlambda
+          path: ./forlambda
 
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
@@ -36,7 +42,7 @@ jobs:
       - name: Add Lambda Function Code to Zip
         run: |
           zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
-          zip -u forlambda
+          zip -u lambda_deployment.zip forlambda
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
