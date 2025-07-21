@@ -10,7 +10,7 @@ ADD requirements.txt /tmp
 
 
 RUN python -m venv /lambda/venv
-ENV PATH="/lambda/venv/bin:$PATH"
+# ENV PATH="/lambda/venv/bin:$PATH"
 RUN source /lambda/venv/bin/activate
 RUN python -m pip install --upgrade pip
 RUN pip install setuptools --upgrade
