@@ -42,6 +42,7 @@ jobs:
 
       - name: Add Lambda Function Code to Zip
         run: |
+          zip -u lambda_deployment.zip forlambda.zip
           zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
           zip -u lambda_deployment.zip ./forlambda
 
