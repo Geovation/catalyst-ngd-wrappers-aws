@@ -2,4 +2,4 @@
 shapely==1.8.5.post1
 marshmallow==3.14.1
 aws_lambda_typing==2.20.0
-https://github.com/Geovation/catalyst-ngd-wrappers-python/archive/refs/tags/0.1.0.zip
+#https://github.com/Geovation/catalyst-ngd-wrappers-python/archive/refs/tags/0.1.0.zip
