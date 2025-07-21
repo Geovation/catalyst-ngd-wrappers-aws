@@ -1,5 +1,4 @@
 # Test for deployment 2
-import boto3
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
     items_col, items_limit_geom, items_limit_col, items_geom_col, items_limit_geom_col
@@ -9,8 +8,6 @@ from utils import BaseSerialisedRequest, handle_error, \
 
 from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
-
-s3_client = boto3.client('s3')
 
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''

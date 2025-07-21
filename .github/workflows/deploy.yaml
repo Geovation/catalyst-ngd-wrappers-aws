@@ -30,7 +30,6 @@ jobs:
 
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
-          cd ./forlambda
           zip -r ../lambda_deployment.zip .  # Zip the contents, not the directory
           cd ..
 
