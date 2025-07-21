@@ -19,9 +19,9 @@ RUN pip install git+https://github.com/Geovation/catalyst-ngd-wrappers-python.gi
 RUN pip install --quiet -r /tmp/requirements.txt
 
 # Add your source code
-ADD lambda_function.py
-ADD schemas.py
-ADD utils.py
+ADD lambda_function.py .
+ADD schemas.py .
+ADD utils.py .
 RUN find -type d | xargs chmod ugo+rx \
     && find -type f | xargs chmod ugo+r
 
