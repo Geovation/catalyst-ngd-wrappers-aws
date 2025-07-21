@@ -34,7 +34,9 @@ jobs:
           cd ..
 
       - name: Add Lambda Function Code to Zip
-        run: zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
+        run: |
+          zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
+          zip -u forlambda
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
