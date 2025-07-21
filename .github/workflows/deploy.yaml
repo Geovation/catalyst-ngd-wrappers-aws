@@ -20,17 +20,17 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          mkdir ~/forlambda
-          cd ~/forlambda
+          mkdir ./forlambda
+          cd ./forlambda
           python -m venv .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
-          pip install shapely -t ~/forlambda/.venv/lib/python3.6/site-packages/
+          pip install shapely -t ./forlambda/.venv/lib/python3.6/site-packages/
           pip install -r ../requirements.txt
 
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
-          cd dependencies
+          cd ./forlambda
           zip -r ../lambda_deployment.zip .  # Zip the contents, not the directory
           cd ..
 
