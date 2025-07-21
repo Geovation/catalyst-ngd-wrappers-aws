@@ -37,7 +37,7 @@ jobs:
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
           cd ..
-          zip -r forlambda.zip forlambda
+          zip -r forlambda.zip forlambda/.
           zip -r lambda_deployment.zip forlambda.zip
 
       - name: Add Lambda Function Code to Zip
