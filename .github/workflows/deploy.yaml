@@ -38,7 +38,7 @@ jobs:
         run: |
           zip -r ../forlambda.zip .
           cd ..
-          zip -r lambda_deployment.zip forlambda.zip
+          zip -r lambda_deployment.zip ./forlambda.zip
 
       - name: Add Lambda Function Code to Zip
         run: |
