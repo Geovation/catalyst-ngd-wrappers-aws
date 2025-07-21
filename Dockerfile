@@ -13,7 +13,7 @@ RUN pip install --quiet -t /lambda/ -r /tmp/requirements.txt \
     && find /lambda -type d | xargs chmod ugo+rx \
     && find /lambda -type f | xargs chmod ugo+r \
     && cat /tmp/requirements.txt
-
+RUN ls
 # Add your source code
 ADD lambda_function.py /lambda/
 ADD schemas.py /lambda/
