@@ -26,7 +26,7 @@ jobs:
           source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install shapely -t ~/forlambda/.venv/lib/python3.6/site-packages/
-          pip install -r requirements.txt
+          pip install -r ../requirements.txt
 
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
