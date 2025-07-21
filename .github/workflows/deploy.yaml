@@ -25,7 +25,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           python -m pip install --upgrade pip
-          pip install shapely -t ./forlambda/venv/lib/python3.6/site-packages/
+          pip install shapely -t ./forlambda/venv/lib/python3.11/site-packages/
           pip install -r ../requirements.txt
       
       - name: Save forlambda artifact
@@ -36,13 +36,13 @@ jobs:
 
       - name: Package Dependencies into Lambda Deployment Zip
         run: |
-          zip -r ../lambda_deployment.zip .  # Zip the contents, not the directory
+          zip -r ../lambda_deployment.zip .
           cd ..
 
       - name: Add Lambda Function Code to Zip
         run: |
           zip -u lambda_deployment.zip lambda_function.py schemas.py utils.py
-          zip -u lambda_deployment.zip forlambda
+          zip -u lambda_deployment.zip ./forlambda
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
