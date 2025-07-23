@@ -16,8 +16,8 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
 
     def __init__(self, event: dict) -> None:
         method = event.get('http').get('method')
-        req_context = event.get('requestContext', {})
-        url = req_context.get('domainName') + req_context.get('path')
+        req_context = event.get('requestContext')
+        url = req_context.get('domainName') + event.get('rawPath')
         params = event.get('queryStringParameters', {})
         route_params = event.get('pathParameters')
         headers = event.get('headers', {})
@@ -174,7 +174,8 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return event
+    path = event['requestContext']['http']['path']
+
     route = event.get('routeKey', 'base')
     if route in routes:
         func = routes[route]

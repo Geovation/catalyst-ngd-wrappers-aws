@@ -1,3 +1,5 @@
+import re
+
 from marshmallow.exceptions import ValidationError
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import \
@@ -159,3 +161,17 @@ def construct_collections_response(data: BaseSerialisedRequest) -> dict:
         #track_event('HTTP_Request', custom_dimensions=custom_dimensions)
 
     return response_data
+
+def parse_base_path(full_path: str) -> tuple[str, str]:
+    '''Parses the path from a full URL, removing query parameters.'''
+    shortbase = 'catalyst/features/'
+    if not full_path.startswith(shortbase):
+        return full_path, ''
+    longbase = f'{shortbase}latest-collections/'
+    prefix = longbase if full_path.startswith(longbase) else shortbase
+    stripped_path = full_path.replace(prefix, '')
+    if not stripped_path:
+        return full_path, ''
+    collection = stripped_path.split('/')[0]
+    parsed_path = full_path.replace(collection, '{collection}')
+    return parsed_path, collection
