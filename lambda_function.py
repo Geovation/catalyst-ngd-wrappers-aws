@@ -33,7 +33,7 @@ def aws_serialise_response(data: dict) -> dict:
         "isBase64Encoded": False,
         "statusCode": code,
         "headers": data['headers'],
-        "body": data
+        "body": "test"
     }
     return response
 
