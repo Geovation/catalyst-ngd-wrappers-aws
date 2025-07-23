@@ -186,7 +186,7 @@ def lambda_handler(event: dict, context) -> dict:
 
     if parsed_path in routes:
         func = routes[parsed_path]
-        response = func(event)
+        #response = func(event)
         return {"placeholder": "test"}  # Placeholder for testing
     return {
         "isBase64Encoded": False,
