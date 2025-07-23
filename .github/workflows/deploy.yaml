@@ -28,8 +28,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install shapely -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
-          pip install -r requirements.txt -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
+          pip install --platform manylinux2014_x86_64 --implementation cp shapely -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
+          pip install --platform manylinux2014_x86_64 --implementation cp --only-binary=:all: --upgrade -r requirements.txt -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
 
       - name: Save contents of venv as artifact
         uses: actions/upload-artifact@v4
@@ -37,9 +37,14 @@ jobs:
           name: venv
           path: venv
 
-      - name: Package Dependencies into Lambda Deployment Zip
+      - name: Package lib dependencies into Lambda Deployment Zip
         run: |
           cd venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
+          zip -r ../../../../lambda-deployment.zip .
+
+      - name: Package lib64 dependencies into Lambda Deployment Zip
+        run: |
+          cd venv/lib64/python${{ env.PYTHON_VERSION }}/site-packages
           zip -r ../../../../lambda-deployment.zip .
 
       - name: Add Lambda Function Code to Zip
