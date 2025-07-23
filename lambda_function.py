@@ -155,16 +155,30 @@ def aws_limit_geom_col(event: dict) -> dict:
 
 
 ROUTE_BASE = 'catalyst/features/{collection}/items/'
-ROUTE_ENDS = {
-    'base': aws_base,
-    'limit': aws_limit,
-    'geom': aws_geom,
-    'col': aws_col,
-    'limit_geom': aws_limit_geom,
-    'limit_col': aws_limit_col,
-    'geom_col': aws_geom_col,
-    'limit_geom_col': aws_limit_geom_col
-}
+
+def switch_route(route: str) -> callable:
+    '''Returns the appropriate function based on the route.'''
+    match route:
+        case 'base':
+            return aws_base
+        case 'limit':
+            return aws_limit
+        case 'geom':
+            return aws_geom
+        case 'col':
+            return aws_col
+        case 'limit_geom':
+            return aws_limit_geom
+        case 'limit_col':
+            return aws_limit_col
+        case 'geom_col':
+            return aws_geom_col
+        case 'limit_geom_col':
+            return aws_limit_geom_col
+        case _:
+            return aws_base
+
+
 routes = {ROUTE_BASE + key: func for key, func in ROUTE_ENDS.items()}
 routes['catalyst/features/latest-collections/{collection}'] = aws_latest_collections
 routes['test'] = None
@@ -185,9 +199,9 @@ def lambda_handler(event: dict, context) -> dict:
     }
 
     if parsed_path in routes:
-        func = routes[parsed_path]
-        #response = func(event)
-        return {"placeholder": "test"}  # Placeholder for testing
+        func = switch_route(parsed_path)
+        response = func(event)
+        return response
     return {
         "isBase64Encoded": False,
         "statusCode": 404,
