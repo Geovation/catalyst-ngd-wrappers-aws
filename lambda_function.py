@@ -174,7 +174,7 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return event
+
     path = event['rawPath']
     parsed_path, collection = parse_base_path(path)
     event['custom'] = {
@@ -183,6 +183,7 @@ def lambda_handler(event: dict, context) -> dict:
             'collection': collection
         }
     }
+    return event
 
     if parsed_path in routes:
         func = routes[parsed_path]
