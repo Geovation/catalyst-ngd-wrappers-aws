@@ -174,6 +174,7 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
+    return event
     route = event.get('routeKey', 'base')
     if route in routes:
         func = routes[route]
