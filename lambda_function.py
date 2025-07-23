@@ -154,7 +154,7 @@ def aws_limit_geom_col(event: dict) -> dict:
     return response
 
 
-ROUTE_BASE = 'catalyst/features/{collection}/items/'
+ROUTE_BASE = '/catalyst/features/{collection}/items/'
 ROUTE_ENDS = {
     'base': aws_base,
     'limit': aws_limit,
@@ -166,7 +166,7 @@ ROUTE_ENDS = {
     'limit_geom_col': aws_limit_geom_col
 }
 routes = {ROUTE_BASE + key: func for key, func in ROUTE_ENDS.items()}
-routes['catalyst/features/latest-collections/{collection}'] = aws_latest_collections
+routes['/catalyst/features/latest-collections/{collection}'] = aws_latest_collections
 routes['test'] = None
 
 def lambda_handler(event: dict, context) -> dict:
@@ -182,14 +182,13 @@ def lambda_handler(event: dict, context) -> dict:
             'collection': collection
         }
     }
-    
+
     if parsed_path in routes:
         func = routes[parsed_path]
         return func(event)
-    else:
-        return {
-            "isBase64Encoded": False,
-            "statusCode": 404,
-            "headers": {"Content-Type": "application/json"},
-            "body": {'error': 'Not Found', 'message': f'No handler for route: {parsed_path}'}
-        }
+    return {
+        "isBase64Encoded": False,
+        "statusCode": 404,
+        "headers": {"Content-Type": "application/json"},
+        "body": {'error': 'Not Found', 'message': f'No handler for route: {parsed_path}'}
+    }
