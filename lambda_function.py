@@ -33,7 +33,7 @@ def aws_serialise_response(data: dict) -> dict:
         "isBase64Encoded": False,
         "statusCode": code,
         "headers": data['headers'],
-        "body": "test"
+        "body": data
     }
     return response
 
@@ -186,7 +186,8 @@ def lambda_handler(event: dict, context) -> dict:
 
     if parsed_path in routes:
         func = routes[parsed_path]
-        return func(event)
+        response = func(event)
+        return {"placeholder": "test"}  # Placeholder for testing
     return {
         "isBase64Encoded": False,
         "statusCode": 404,
