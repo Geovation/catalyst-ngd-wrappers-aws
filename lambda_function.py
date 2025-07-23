@@ -183,7 +183,6 @@ def lambda_handler(event: dict, context) -> dict:
             'collection': collection
         }
     }
-    return event
 
     if parsed_path in routes:
         func = routes[parsed_path]
