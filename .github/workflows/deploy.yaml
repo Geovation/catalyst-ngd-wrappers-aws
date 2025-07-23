@@ -28,8 +28,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install --platform manylinux2014_x86_64 --implementation cp shapely -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
-          pip install --platform manylinux2014_x86_64 --implementation cp --only-binary=:all: --upgrade -r requirements.txt -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade shapely -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade -r requirements.txt -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
 
       - name: Save contents of venv as artifact
         uses: actions/upload-artifact@v4
