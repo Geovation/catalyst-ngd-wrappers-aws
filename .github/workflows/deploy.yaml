@@ -18,34 +18,23 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Update Pip
-        run: python -m pip install --upgrade pip
+      - name: Create a directory for the Lambda deployment
+        run: mkdir -p lambda
+
+      - name: Install dependencies into the Lambda deployment directory
+        run: |
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade shapely -t lambda
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade -r requirements.txt -t lambda
 
       - name: Set up virtual environment
         run: python -m venv venv
       - name: Activate virtual environment
         run: source venv/bin/activate
 
-      - name: Install Dependencies
-        run: |
-          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade shapely -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
-          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade -r requirements.txt -t ./venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
-
-      - name: Save contents of venv as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: venv
-          path: venv
-
       - name: Package lib dependencies into Lambda Deployment Zip
         run: |
-          cd venv/lib/python${{ env.PYTHON_VERSION }}/site-packages
-          zip -r ../../../../lambda-deployment.zip .
-
-      - name: Package lib64 dependencies into Lambda Deployment Zip
-        run: |
-          cd venv/lib64/python${{ env.PYTHON_VERSION }}/site-packages
-          zip -r ../../../../lambda-deployment.zip .
+          cd lambda
+          zip -r ../lambda-deployment.zip .
 
       - name: Add Lambda Function Code to Zip
         run: |
