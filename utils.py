@@ -163,7 +163,7 @@ def construct_collections_response(data: BaseSerialisedRequest) -> dict:
     return response_data
 
 def parse_base_path(full_path: str) -> tuple[str, str]:
-    '''Parses the path from a full URL, removing query parameters.'''
+    '''Parses the path from a full URL, extracting the collection name if present.'''
     shortbase = 'catalyst/features/'
     if not full_path.startswith(shortbase):
         return full_path, ''

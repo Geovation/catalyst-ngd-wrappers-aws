@@ -3,8 +3,8 @@
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
     items_col, items_limit_geom, items_limit_col, items_geom_col, items_limit_geom_col
 
-from utils import BaseSerialisedRequest, handle_error, \
-    construct_features_response, construct_collections_response
+from utils import BaseSerialisedRequest, handle_error, construct_features_response, \
+    construct_collections_response, parse_base_path
 
 from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
@@ -17,9 +17,9 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
     def __init__(self, event: dict) -> None:
         method = event.get('http').get('method')
         req_context = event.get('requestContext')
-        url = req_context.get('domainName') + event.get('rawPath')
+        url = req_context.get('domainName') + event.get('custom').get('parsedPath')
         params = event.get('queryStringParameters', {})
-        route_params = event.get('pathParameters')
+        route_params = event.get('custom', {}).get('routeParams', {})
         headers = event.get('headers', {})
         super().__init__(method, url, params, route_params, headers)
 
@@ -174,16 +174,22 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    path = event['requestContext']['http']['path']
-
-    route = event.get('routeKey', 'base')
-    if route in routes:
-        func = routes[route]
+    path = event['rawPath']
+    parsed_path, collection = parse_base_path(path)
+    event['custom'] = {
+        'parsedPath': parsed_path,
+        'routeParams': {
+            'collection': collection
+        }
+    }
+    
+    if parsed_path in routes:
+        func = routes[parsed_path]
         return func(event)
     else:
         return {
             "isBase64Encoded": False,
             "statusCode": 404,
             "headers": {"Content-Type": "application/json"},
-            "body": {'error': 'Not Found', 'message': f'No handler for route: {route}'}
+            "body": {'error': 'Not Found', 'message': f'No handler for route: {parsed_path}'}
         }
