@@ -87,12 +87,12 @@ def construct_features_response(
     }
     if not multi_collection:
         custom_params['collection'] = data.route_params.get('collection')
+    return {'result': "TEST SUCCESS", "parsed_params": parsed_params, "custom_params": custom_params, "headers": data.headers}
     response_data = ngd_api_func(
         query_params=parsed_params,
         headers=data.headers,
         **custom_params
     )
-    return {'result': "TEST SUCCESS", "parsed_params": parsed_params, "custom_params": custom_params, "headers": data.headers}
     descr = response_data.get('description')
     if response_data.get('errorSource') and isinstance(descr, str):
         fields = [
