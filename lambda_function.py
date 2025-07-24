@@ -11,6 +11,7 @@ from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
 
 HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/prod'
+HOST2 = 'https://bjs4mfwx6nrsjdptzcjighr7nq0bsxft.lambda-url.eu-west-2.on.aws'
 
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
@@ -18,10 +19,15 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
 
     def __init__(self, event: dict) -> None:
-        method = event.get('httpMethod')
-        url = HOST + event.get('custom').get('parsedPath')
+        #method = event.get('httpMethod')
+        #url = HOST + event.get('custom').get('parsedPath')
+        #params = event.get('queryStringParameters', {})
+        #route_params = event.get('custom').get('routeParams')
+        #headers = event.get('headers', {})
+        method = event.get('http').get('method')
+        url = HOST2 + event.get('http').get('path')
         params = event.get('queryStringParameters', {})
-        route_params = event.get('custom').get('routeParams')
+        route_params = event.get('custom', {}).get('routeParams', {})
         headers = event.get('headers', {})
         super().__init__(method, url, params, route_params, headers)
 
