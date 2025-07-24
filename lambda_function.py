@@ -24,7 +24,7 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
         #params = event.get('queryStringParameters', {})
         #route_params = event.get('custom').get('routeParams')
         #headers = event.get('headers', {})
-        method = event.get('http').get('method')
+        method = event.get('requestContext').get('http').get('method')
         url = HOST2 + event.get('rawPath')
         params = event.get('queryStringParameters', {})
         route_params = event.get('custom', {}).get('routeParams', {})
