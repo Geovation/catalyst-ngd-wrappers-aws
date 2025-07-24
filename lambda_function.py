@@ -188,6 +188,13 @@ def lambda_handler(event: dict, context) -> dict:
     '''
 
     path = event['path']
+    if path == 'catalyst/features/test':
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({'message': 'Test successful'})
+        }
     parsed_path, collection = parse_base_path(path)
     event['custom'] = {
         'parsedPath': parsed_path,
