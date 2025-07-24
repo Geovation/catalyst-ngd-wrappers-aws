@@ -186,7 +186,12 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return event
+    return {
+        "isBase64Encoded": False,
+        "statusCode": 404,
+        "headers": {"Content-Type": "application/json"},
+        "body": event
+    }
     path = event['rawPath']
     parsed_path, collection = parse_base_path(path)
     event['custom'] = {
