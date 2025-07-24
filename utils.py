@@ -1,5 +1,3 @@
-import re
-
 from marshmallow.exceptions import ValidationError
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import \
