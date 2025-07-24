@@ -31,6 +31,8 @@ def aws_serialise_response(data: dict) -> dict:
     '''
 
     code = data.pop('code', 200)
+    print('ONEONEONE')
+    print(data)
     response = {
         "isBase64Encoded": False,
         "statusCode": code,
@@ -68,11 +70,14 @@ def aws_latest_collections(event: dict) -> dict:
 
 def aws_base(event: dict) -> dict:
     '''AWS Lambda function, OS NGD API - Features, No extensions applied.'''
+    print('aws_base!!!')
     response = aws_process_request(
         event=event,
         schema_class=FeaturesBaseSchema,
         ngd_api_func=items
     )
+    print('aws_base 2!!!')
+    print(response)
     return response
 
 
@@ -201,6 +206,8 @@ def lambda_handler(event: dict, context) -> dict:
     try:
         func = switch_route(parsed_path)
         response = func(event)
+        print('TWOTWOTWO')
+        print(response)
         return response
     except ValueError as e:
         return {
