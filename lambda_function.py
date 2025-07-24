@@ -10,7 +10,7 @@ from utils import BaseSerialisedRequest, handle_error, construct_features_respon
 from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
 
-HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/dev'
+HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/prod'
 
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
@@ -159,7 +159,7 @@ def aws_limit_geom_col(event: dict) -> dict:
 def switch_route(route: str) -> callable:
     '''Returns the appropriate function based on the route.'''
     match route:
-        case '{collection}/items/':
+        case '{collection}/items':
             return aws_base
         case '{collection}/items/limit':
             return aws_limit
