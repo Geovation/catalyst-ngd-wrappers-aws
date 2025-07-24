@@ -174,5 +174,5 @@ def parse_base_path(full_path: str) -> tuple[str, str]:
     if not stripped_path:
         return full_path, ''
     collection = stripped_path.split('/')[0]
-    parsed_path = full_path.replace(collection, '{collection}')
+    parsed_path = full_path.replace(shortbase, '').replace(collection, '{collection}')
     return parsed_path, collection

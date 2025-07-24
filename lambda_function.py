@@ -34,7 +34,7 @@ def aws_serialise_response(data: dict) -> dict:
         "isBase64Encoded": False,
         "statusCode": code,
         "headers": data['headers'],
-        "body": data
+        "body": json.dumps(data)
     }
     return response
 
@@ -179,7 +179,7 @@ def switch_route(route: str) -> callable:
         case 'latest-collections/{collection}':
             return aws_latest_collections
         case _:
-            return aws_base
+            raise ValueError
 
 
 def lambda_handler(event: dict, context) -> dict:
@@ -187,12 +187,7 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return {
-        "isBase64Encoded": False,
-        "statusCode": 404,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(event)
-    }
+
     path = event['rawPath']
     parsed_path, collection = parse_base_path(path)
     event['custom'] = {
@@ -202,13 +197,14 @@ def lambda_handler(event: dict, context) -> dict:
         }
     }
 
-    # if parsed_path in routes:
-    #     func = switch_route(parsed_path)
-    #     response = func(event)
-    #     return response
-    return {
-        "isBase64Encoded": False,
-        "statusCode": 404,
-        "headers": {"Content-Type": "application/json"},
-        "body": {'error': 'Not Found', 'message': f'No handler for route: {parsed_path}'}
-    }
+    try:
+        func = switch_route(parsed_path)
+        response = func(event)
+        return response
+    except ValueError as e:
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 404,
+            "headers": {"Content-Type": "application/json"},
+            "body": {'error': 'Not Found', 'message': str(e)}
+        }
