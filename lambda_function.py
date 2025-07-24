@@ -10,17 +10,18 @@ from utils import BaseSerialisedRequest, handle_error, construct_features_respon
 from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
 
+HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/dev'
+
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
     A class to represent an AWS HTTP request with its parameters and headers.
     '''
 
     def __init__(self, event: dict) -> None:
-        method = event.get('http').get('method')
-        req_context = event.get('requestContext')
-        url = req_context.get('domainName') + event.get('custom').get('parsedPath')
+        method = event.get('httpMethod')
+        url = HOST + event.get('custom').get('parsedPath')
         params = event.get('queryStringParameters', {})
-        route_params = event.get('custom', {}).get('routeParams', {})
+        route_params = event.get('custom').get('routeParams')
         headers = event.get('headers', {})
         super().__init__(method, url, params, route_params, headers)
 
