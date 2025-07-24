@@ -214,5 +214,5 @@ def lambda_handler(event: dict, context) -> dict:
             "isBase64Encoded": False,
             "statusCode": 404,
             "headers": {"Content-Type": "application/json"},
-            "body": {'error': 'Not Found', 'message': str(e)}
+            "body": json.dumps({'error': 'Not Found', 'message': str(e)})
         }
