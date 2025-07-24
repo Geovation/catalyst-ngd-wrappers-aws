@@ -1,4 +1,5 @@
 # Test for deployment 2
+import json
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
     items_col, items_limit_geom, items_limit_col, items_geom_col, items_limit_geom_col
@@ -190,7 +191,7 @@ def lambda_handler(event: dict, context) -> dict:
         "isBase64Encoded": False,
         "statusCode": 404,
         "headers": {"Content-Type": "application/json"},
-        "body": event
+        "body": json.dumps('event')
     }
     path = event['rawPath']
     parsed_path, collection = parse_base_path(path)
