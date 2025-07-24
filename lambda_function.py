@@ -159,29 +159,27 @@ ROUTE_BASE = 'catalyst/features/{collection}/items/'
 def switch_route(route: str) -> callable:
     '''Returns the appropriate function based on the route.'''
     match route:
-        case 'base':
+        case '{collection}/items/base':
             return aws_base
-        case 'limit':
+        case '{collection}/items/limit':
             return aws_limit
-        case 'geom':
+        case '{collection}/items/geom':
             return aws_geom
-        case 'col':
+        case '{collection}/items/col':
             return aws_col
-        case 'limit_geom':
+        case '{collection}/items/limit_geom':
             return aws_limit_geom
-        case 'limit_col':
+        case '{collection}/items/limit_col':
             return aws_limit_col
-        case 'geom_col':
+        case '{collection}/items/geom_col':
             return aws_geom_col
-        case 'limit_geom_col':
+        case '{collection}/items/limit_geom_col':
             return aws_limit_geom_col
+        case 'latest-collections/{collection}':
+            return aws_latest_collections
         case _:
             return aws_base
 
-
-routes = {ROUTE_BASE + key: func for key, func in ROUTE_ENDS.items()}
-routes['catalyst/features/latest-collections/{collection}'] = aws_latest_collections
-routes['test'] = None
 
 def lambda_handler(event: dict, context) -> dict:
     '''
@@ -198,10 +196,10 @@ def lambda_handler(event: dict, context) -> dict:
         }
     }
 
-    if parsed_path in routes:
-        func = switch_route(parsed_path)
-        response = func(event)
-        return response
+    # if parsed_path in routes:
+    #     func = switch_route(parsed_path)
+    #     response = func(event)
+    #     return response
     return {
         "isBase64Encoded": False,
         "statusCode": 404,
