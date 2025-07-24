@@ -191,7 +191,7 @@ def lambda_handler(event: dict, context) -> dict:
         "isBase64Encoded": False,
         "statusCode": 404,
         "headers": {"Content-Type": "application/json"},
-        "body": json.dumps('event')
+        "body": json.dumps(event)
     }
     path = event['rawPath']
     parsed_path, collection = parse_base_path(path)
