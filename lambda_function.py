@@ -188,7 +188,7 @@ def lambda_handler(event: dict, context) -> dict:
     '''
 
     path = event['path']
-    if path == 'catalyst/features/test':
+    if path == '/catalyst/features/test':
         return {
             "isBase64Encoded": False,
             "statusCode": 200,
