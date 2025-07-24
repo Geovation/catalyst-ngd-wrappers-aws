@@ -198,7 +198,7 @@ def lambda_handler(event: dict, context) -> dict:
         #"headers": {"Content-Type": "application/json"},
         #"body": json.dumps(event)
     #}
-    path = event['path']
+    path = event['rawPath']
     if path == '/catalyst/features/test':
         return {
             "isBase64Encoded": False,
