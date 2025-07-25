@@ -27,7 +27,8 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
         route_params.pop('function', None)
         if route_params.get('collection') == 'multi-collection':
             route_params.pop('collection')
-            params['collection'] = event.get('multiValueQueryStringParameters', {}).get('collection', [])
+            collections = event.get('multiValueQueryStringParameters', {}).get('collection', [])
+            params['collection'] = ','.join(collections)
         super().__init__(method, url, params, route_params, headers)
 
 def aws_serialise_response(data: dict) -> dict:
