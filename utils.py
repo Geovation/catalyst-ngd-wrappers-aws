@@ -85,7 +85,7 @@ def construct_features_response(
     }
     if not multi_collection:
         custom_params['collection'] = data.route_params.get('collection')
-    #return {'result': "TEST SUCCESS", "parsed_params": parsed_params, "custom_params": custom_params, "headers": data.headers, "funcname": ngd_api_func.__name__}
+
     response_data = ngd_api_func(
         query_params=parsed_params,
         headers=data.headers,
