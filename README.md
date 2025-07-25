@@ -95,6 +95,7 @@ graph TD
 - **Response Codes**
     
     For error responses (all except 200), the 'errorSource' attribute specifies whether the error was thrown from the OS NGD API, or from the surrounding Catalyst wrapper.
+    Please also cross-reference with [AWS API Gateway response types](https://docs.aws.amazon.com/apigateway/latest/developerguide/supported-gateway-response-types.html)
     | Response Code | Description   |
     |---------------|-------------------------------------------------------------------------------------------------------|
     | **200 $${\color{green}✓}$$**       | A list of features in a feature collection, or a hierarchical dictionary of feature collections.  |
