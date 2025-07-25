@@ -13,6 +13,17 @@ from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
 #HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/prod'
 #HOST2 = 'https://bjs4mfwx6nrsjdptzcjighr7nq0bsxft.lambda-url.eu-west-2.on.aws'
 
+AWS_HEADERS = [
+    'Accept',
+    'Accept-Encoding',
+    'Host',
+    'User-Agent',
+    'X-Amzn-Trace-Id',
+    'X-Forwarded-For',
+    'X-Forwarded-Port',
+    'X-Forwarded-Proto'
+]
+
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
     A class to represent an AWS HTTP request with its parameters and headers.
@@ -21,6 +32,8 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
     def __init__(self, event: dict) -> None:
         method = event.get('httpMethod')
         headers = event.get('headers', {})
+        for header in AWS_HEADERS:
+            headers.pop(header, None)  # Remove AWS specific headers
         url = f"https://{headers.get('Host','')}{event.get('path','')}"
         params = event.get('queryStringParameters', {})
         route_params = event.get('pathParameters', {})
