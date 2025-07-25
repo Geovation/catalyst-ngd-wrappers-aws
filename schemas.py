@@ -34,6 +34,7 @@ class AbstractHierarchicalSchema(FeaturesBaseSchema):
 
 class LimitSchema(FeaturesBaseSchema):
     '''limit is the maximum number of items to return'''
+    limit = Integer(data_key='limit', required=False)
     request_limit = Integer(data_key='request-limit', required=False)
 
 class GeomSchema(AbstractHierarchicalSchema):
