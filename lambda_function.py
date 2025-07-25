@@ -183,9 +183,9 @@ def switch_route(route: str) -> callable:
 def switch_resource(resource: str) -> callable or None:
     '''Matches the resource path to the appropriate function.'''
     match resource:
-        case '/catalyst/features/latest-collections':
+        case '/catalyst/latest-collections':
             return aws_latest_collections
-        case '/catalyst/features/latest-collections/{collection}':
+        case '/catalyst/latest-collections/{collection}':
             return aws_latest_collections
         case '/catalyst/features/{collection}/items':
             return aws_base
