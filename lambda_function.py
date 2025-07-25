@@ -39,7 +39,6 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
         route_params = event.get('pathParameters', {})
         route_params.pop('function', None)
         if route_params.get('collection') == 'multi-collection':
-            route_params.pop('collection')
             collections = event.get('multiValueQueryStringParameters', {}).get('collection', [])
             params['collection'] = ','.join(collections)
         super().__init__(method, url, params, route_params, headers)
