@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - bug/shapely-install
+      - feat/API-Gateway_compatability
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
 
