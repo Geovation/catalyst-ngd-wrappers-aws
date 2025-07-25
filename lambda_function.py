@@ -19,16 +19,16 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
 
     def __init__(self, event: dict) -> None:
-        #method = event.get('httpMethod')
-        #url = HOST + event.get('custom').get('parsedPath')
-        #params = event.get('queryStringParameters', {})
-        #route_params = event.get('custom').get('routeParams')
-        #headers = event.get('headers', {})
-        method = event.get('requestContext').get('http').get('method')
-        url = HOST2 + event.get('rawPath')
+        method = event.get('httpMethod')
+        url = HOST + event.get('custom').get('parsedPath')
         params = event.get('queryStringParameters', {})
-        route_params = event.get('custom', {}).get('routeParams', {})
+        route_params = event.get('custom').get('routeParams')
         headers = event.get('headers', {})
+        #method = event.get('requestContext').get('http').get('method')
+        #url = HOST2 + event.get('rawPath')
+        #params = event.get('queryStringParameters', {})
+        #route_params = event.get('custom', {}).get('routeParams', {})
+        #headers = event.get('headers', {})
         super().__init__(method, url, params, route_params, headers)
 
 def aws_serialise_response(data: dict) -> dict:
@@ -212,6 +212,12 @@ def lambda_handler(event: dict, context) -> dict:
         'routeParams': {
             'collection': collection
         }
+    }
+    return {
+        "isBase64Encoded": False,
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps(event)
     }
 
     try:
