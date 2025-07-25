@@ -2,9 +2,9 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - main
+      - bug/shapely-install
 env:
-  PYTHON_VERSION: '3.11'  # Specify the Python version you want to use
+  PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
 
 jobs:
   deploy_lambda:
@@ -18,22 +18,33 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Create dependencies directory
-        run: mkdir -p dependencies
+      - name: Create a directory for the Lambda deployment
+        run: mkdir -p lambda
 
-      - name: Install Dependencies
+      - name: Install dependencies into the Lambda deployment directory
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt -t dependencies
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade shapely -t lambda
+          pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade -r requirements.txt -t lambda
 
-      - name: Package Dependencies into Lambda Deployment Zip
+      - name: Set up virtual environment
+        run: python -m venv venv
+      - name: Activate virtual environment
+        run: source venv/bin/activate
+
+      - name: Package lib dependencies into Lambda Deployment Zip
         run: |
-          cd dependencies
-          zip -r ../lambda_deployment.zip .  # Zip the contents, not the directory
-          cd ..
+          cd lambda
+          zip -r ../lambda-deployment.zip .
 
       - name: Add Lambda Function Code to Zip
-        run: zip lambda_deployment.zip lambda_function.py schemas.py utils.py
+        run: |
+          zip -u lambda-deployment.zip lambda_function.py schemas.py utils.py
+
+      - name: Save Lambda Deployment Zip as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-deployment-zip
+          path: lambda-deployment.zip
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -43,4 +54,4 @@ jobs:
           aws-region: eu-west-2
 
       - name: Update Lambda Function
-        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda_deployment.zip
+        run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda-deployment.zip

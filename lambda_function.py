@@ -1,16 +1,17 @@
 # Test for deployment 2
-import boto3
+import json
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
     items_col, items_limit_geom, items_limit_col, items_geom_col, items_limit_geom_col
 
-from utils import BaseSerialisedRequest, handle_error, \
-    construct_features_response, construct_collections_response
+from utils import BaseSerialisedRequest, handle_error, construct_features_response, \
+    construct_collections_response, parse_base_path
 
 from schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
 
-s3_client = boto3.client('s3')
+HOST = 'https://ghtwjk9jec.execute-api.eu-west-2.amazonaws.com/prod'
+HOST2 = 'https://bjs4mfwx6nrsjdptzcjighr7nq0bsxft.lambda-url.eu-west-2.on.aws'
 
 class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
@@ -18,12 +19,16 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
     '''
 
     def __init__(self, event: dict) -> None:
-        method = event.get('http').get('method')
-        req_context = event.get('requestContext', {})
-        url = req_context.get('domainName') + req_context.get('path')
+        method = event.get('httpMethod')
+        url = HOST + event.get('custom').get('parsedPath')
         params = event.get('queryStringParameters', {})
-        route_params = event.get('pathParameters')
+        route_params = event.get('custom').get('routeParams')
         headers = event.get('headers', {})
+        #method = event.get('requestContext').get('http').get('method')
+        #url = HOST2 + event.get('rawPath')
+        #params = event.get('queryStringParameters', {})
+        #route_params = event.get('custom', {}).get('routeParams', {})
+        #headers = event.get('headers', {})
         super().__init__(method, url, params, route_params, headers)
 
 def aws_serialise_response(data: dict) -> dict:
@@ -35,8 +40,8 @@ def aws_serialise_response(data: dict) -> dict:
     response = {
         "isBase64Encoded": False,
         "statusCode": code,
-        "headers": data['headers'],
-        "body": data
+        "headers": data.get('headers', {"Content-Type": "application/json"}),
+        "body": json.dumps(data)
     }
     return response
 
@@ -157,34 +162,72 @@ def aws_limit_geom_col(event: dict) -> dict:
     return response
 
 
-ROUTE_BASE = 'catalyst/features/{collection}/items/'
-ROUTE_ENDS = {
-    'base': aws_base,
-    'limit': aws_limit,
-    'geom': aws_geom,
-    'col': aws_col,
-    'limit_geom': aws_limit_geom,
-    'limit_col': aws_limit_col,
-    'geom_col': aws_geom_col,
-    'limit_geom_col': aws_limit_geom_col
-}
-routes = {ROUTE_BASE + key: func for key, func in ROUTE_ENDS.items()}
-routes['catalyst/features/latest-collections/{collection}'] = aws_latest_collections
-routes['test'] = None
+def switch_route(route: str) -> callable:
+    '''Returns the appropriate function based on the route.'''
+    match route:
+        case '{collection}/items':
+            return aws_base
+        case '{collection}/items/limit':
+            return aws_limit
+        case '{collection}/items/geom':
+            return aws_geom
+        case '{collection}/items/col':
+            return aws_col
+        case '{collection}/items/limit_geom':
+            return aws_limit_geom
+        case '{collection}/items/limit_col':
+            return aws_limit_col
+        case '{collection}/items/geom_col':
+            return aws_geom_col
+        case '{collection}/items/limit_geom_col':
+            return aws_limit_geom_col
+        case 'latest-collections/{collection}':
+            return aws_latest_collections
+        case _:
+            raise ValueError
+
 
 def lambda_handler(event: dict, context) -> dict:
     '''
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    route = event.get('routeKey', 'base')
-    if route in routes:
-        func = routes[route]
-        return func(event)
-    else:
+    #return {
+        #"isBase64Encoded": False,
+        #"statusCode": 200,
+        #"headers": {"Content-Type": "application/json"},
+        #"body": json.dumps(event)
+    #}
+    path = event['path']
+    if path == '/catalyst/features/test':
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({'message': 'Test successful'})
+        }
+    parsed_path, collection = parse_base_path(path)
+    event['custom'] = {
+        'parsedPath': parsed_path,
+        'routeParams': {
+            'collection': collection
+        }
+    }
+    return {
+        "isBase64Encoded": False,
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps(event)
+    }
+
+    try:
+        func = switch_route(parsed_path)
+        response = func(event)
+        return response
+    except ValueError as e:
         return {
             "isBase64Encoded": False,
             "statusCode": 404,
             "headers": {"Content-Type": "application/json"},
-            "body": {'error': 'Not Found', 'message': f'No handler for route: {route}'}
+            "body": json.dumps({'error': 'Not Found', 'message': str(e)})
         }
