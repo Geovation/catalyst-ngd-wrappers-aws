@@ -53,9 +53,6 @@ graph TD
         This is because, if features overlap multiple search areas, duplicates are removed after the limit is reached.
     - **offset**: int - Not available when used with the _limit_ extension 
 - **Additional Catalyst Query Parameters**
-    - **filter_params**: str (dict) - OS NGD attribute filters to pass to the query within the _filter_ query parameter. The can be used instead of or in addition to manually setting the filter in _query\_params_.
-    The key-value pairs will appended using the EQUAL TO [ = ] comparator. Any other CQL Operator comparisons must be set manually in query_params.
-    Queryable attributes can be found in OS NGD [codelists documentation](https://docs.os.uk/osngd/code-lists/code-lists-overview), or by inserting the relevant collectionId into the https://api.os.uk/features/ngd/ofa/v1/collections/{{collectionId}}/queryables endpoint.
     - **wkt**: str (well-known text) - A means of searching a geometry for features. The search area(s) must be supplied in wkt.
     The function automatically composes the full INTERSECTS filter and adds it to the _filter_ query parameter. [How to write well-known text.](https://libgeos.org/specifications/wkt/)
     Make sure that _filter-crs_ is set to the appropriate value.
@@ -121,9 +118,7 @@ graph TD
 
 ## Available endpoints resulting from extension combinations
 
-- Make sure to prefix the endpoints below with one of the following
-    - Cloud server: https://catalyst-ngd-wrapper-functions.azurewebsites.net/api/
-    - Local azurite deployment: http://localhost:7071/api/
+- Make sure to prefix the endpoints below with your AWS Host and Stage URL.
 
 - catalyst/latest-collections
 - catalyst/latest-collections/{collectionId}
