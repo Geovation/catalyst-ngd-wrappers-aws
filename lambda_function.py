@@ -38,9 +38,6 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
         params = event.get('queryStringParameters', {})
         route_params = event.get('pathParameters', {})
         route_params.pop('function', None)
-        if route_params.get('collection') == 'multi-collection':
-            collections = event.get('multiValueQueryStringParameters', {}).get('collection', [])
-            params['collection'] = ','.join(collections)
         super().__init__(method, url, params, route_params, headers)
 
 def aws_serialise_response(data: dict) -> dict:
@@ -222,12 +219,12 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return {
-        "isBase64Encoded": False,
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(event)
-    }
+    # return {
+    #     "isBase64Encoded": False,
+    #     "statusCode": 200,
+    #     "headers": {"Content-Type": "application/json"},
+    #     "body": json.dumps(event)
+    # }
     resource = event['resource']
     function = event.get('pathParameters', {}).get('function', '')
 
