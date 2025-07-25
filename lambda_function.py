@@ -170,6 +170,40 @@ def switch_route(route: str) -> callable:
             raise ValueError
 
 
+def switch_resource(resource: str) -> callable | None:
+    '''Matches the resource path to the appropriate function.'''
+    match resource:
+        case '/catalyst/features/latest-collections':
+            return aws_latest_collections
+        case '/catalyst/features/latest-collections/{collection}':
+            return aws_latest_collections
+        case '/catalyst/features/{collection}/items':
+            return aws_base
+        case '/catalyst/features/{collection}/items/{function}':
+            return None
+        case _:
+            raise ValueError(f"Unknown resource: {resource}")
+
+def switch_function(function: str) -> callable:
+    '''Returns the appropriate function based on the function name.'''
+    match function:
+        case 'limit':
+            return aws_limit
+        case 'geom':
+            return aws_geom
+        case 'col':
+            return aws_col
+        case 'limit-geom':
+            return aws_limit_geom
+        case 'limit-col':
+            return aws_limit_col
+        case 'geom-col':
+            return aws_geom_col
+        case 'limit-geom-col':
+            return aws_limit_geom_col
+        case _:
+            raise ValueError(f"Unknown function: {function}")
+
 def lambda_handler(event: dict, context) -> dict:
     '''
     AWS Lambda handler function.
@@ -177,16 +211,10 @@ def lambda_handler(event: dict, context) -> dict:
     '''
 
     resource = event['resource']
-    if resource == '/catalyst/features/test':
-        return {
-            "isBase64Encoded": False,
-            "statusCode": 200,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({'message': 'Test successful'})
-        }
+    function = event.get('pathParameters', {}).get('function', '')
 
     try:
-        func = switch_route(parsed_path)
+        func = switch_resource(resource) or switch_function(function)
         response = func(event)
         return response
     except ValueError as e:
