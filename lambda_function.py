@@ -31,12 +31,12 @@ class AWSSerialisedRequest(BaseSerialisedRequest):
 
     def __init__(self, event: dict) -> None:
         method = event.get('httpMethod')
-        headers = event.get('headers', {})
+        headers = event.get('headers') or {}
         for header in AWS_HEADERS:
             headers.pop(header, None)  # Remove AWS specific headers
         url = f"https://{headers.get('Host','')}{event.get('path','')}"
-        params = event.get('queryStringParameters', {})
-        route_params = event.get('pathParameters', {})
+        params = event.get('queryStringParameters') or {}
+        route_params = event.get('pathParameters') or {}
         route_params.pop('function', None)
         super().__init__(method, url, params, route_params, headers)
 
@@ -219,14 +219,9 @@ def lambda_handler(event: dict, context) -> dict:
     AWS Lambda handler function.
     Routes the request to the appropriate function based on the event data.
     '''
-    return {
-        "isBase64Encoded": False,
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(event)
-    }
+
     resource = event['resource']
-    function = event.get('pathParameters', {}).get('function', '')
+    function = (event.get('pathParameters') or {}).get('function', '')
 
     try:
         func = switch_resource(resource) or switch_function(function)
