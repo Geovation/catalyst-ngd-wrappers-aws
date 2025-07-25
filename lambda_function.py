@@ -170,7 +170,7 @@ def switch_route(route: str) -> callable:
             raise ValueError
 
 
-def switch_resource(resource: str) -> callable | None:
+def switch_resource(resource: str) -> callable or None:
     '''Matches the resource path to the appropriate function.'''
     match resource:
         case '/catalyst/features/latest-collections':
