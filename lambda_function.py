@@ -1,4 +1,3 @@
-# Test for deployment 2
 import json
 
 from catalyst_ngd_wrappers.ngd_api_wrappers import items, items_limit, items_geom, \
