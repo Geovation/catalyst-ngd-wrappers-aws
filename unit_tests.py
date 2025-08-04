@@ -33,7 +33,7 @@ class NGDTestCase(TestCase):
         self.assertTrue(json_response.get('description', '').startswith(startswith_text))
         self.assertEqual(json_response.get('errorSource', ''), 'OS NGD API')
 
-    def test_complex_request(self):
+    def test_hiearchical_request(self):
         wkt = '''
         GEOMETRYCOLLECTION(
             MULTIPOLYGON(
@@ -72,7 +72,7 @@ class NGDTestCase(TestCase):
             .get('searchAreas',{})[0] \
             .keys()
         )
-        self.assertEqual(feature_keys, [
+        self.assertListEqual(feature_keys, [
             'type',
             'links',
             'timeStamp',
@@ -82,4 +82,47 @@ class NGDTestCase(TestCase):
             'numberOfRequests',
             'telemetryData',
             'searchAreaNumber'
+        ])
+
+    def test_flat_request(self):
+        endpoint = BASE_URL + 'features/multi-collection/items/limit-col'
+        response = r.get(
+            endpoint,
+            params = {
+                'crs': 'http://www.opengis.net/def/crs/EPSG/0/27700',
+                'collection': 'gnm-fts-crowdsourcednamepoint,bld-fts-building-1,trn-ntwk-pathlink',
+                'use-latest-collection': True,
+                'limit': 213,
+                'key': KEY
+            },
+            timeout=GLOBAL_TIMEOUT
+        )
+        self.assertEqual(response.status_code, 200)
+        json_response = response.json()
+        response_keys = list(json_response.keys())
+        self.assertListEqual(response_keys, [
+            'type',
+            'numberOfRequests',
+            'numberOfRequestsByCollection',
+            'numberReturned',
+            'numberReturnedByCollection',
+            'features',
+            'timestamp'
+        ])
+        number_returned_by_collection = json_response.get('numberReturnedByCollection', {})
+        self.assertIn('bld-fts-building-1', number_returned_by_collection)
+        self.assertEqual(len(number_returned_by_collection), 3)
+        self.assertTrue(all(v == 213 for v in number_returned_by_collection.values()))
+        self.assertEqual(json_response.get('numberReturned', 0), 639)
+        number_of_requests_by_collection = json_response.get('numberOfRequestsByCollection', {})
+        self.assertEqual(len(number_of_requests_by_collection), 3)
+        self.assertTrue(all(v == 3 for v in number_of_requests_by_collection.values()))
+        self.assertEqual(json_response.get('numberOfRequests', 0), 9)
+        first_feature_keys = list(json_response.get('features', [])[0].keys())
+        self.assertListEqual(first_feature_keys, [
+            'id',
+            'type',
+            'geometry',
+            'properties',
+            'collection'
         ])
