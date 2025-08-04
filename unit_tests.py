@@ -24,7 +24,6 @@ class NGDTestCase(TestCase):
             headers = {'key': KEY},
             timeout=GLOBAL_TIMEOUT
         )
-        print(KEY or 'NO KEY')
         self.assertEqual(response.status_code, 400)
         json_response = response.json()
         keys = json_response.keys()
@@ -84,6 +83,3 @@ class NGDTestCase(TestCase):
             'telemetryData',
             'searchAreaNumber'
         ])
-
-        if __name__ == '__main__':
-            unittest.main()
