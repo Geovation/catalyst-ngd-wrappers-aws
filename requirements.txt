@@ -1,4 +1,4 @@
 requests==2.32.4
 marshmallow==3.24.1
 aws_lambda_typing==2.20.0
-https://github.com/Geovation/catalyst-ngd-wrappers-python/archive/refs/tags/0.2.0.tar.gz
+git+https://github.com/Geovation/catalyst-ngd-wrappers-python
