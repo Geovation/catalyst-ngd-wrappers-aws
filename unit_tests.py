@@ -1,6 +1,5 @@
 import os
 import requests as r
-import unittest
 from unittest import TestCase
 from dotenv import load_dotenv
 load_dotenv()
@@ -107,7 +106,7 @@ class NGDTestCase(TestCase):
             'numberReturned',
             'numberReturnedByCollection',
             'features',
-            'timestamp'
+            'timeStamp'
         ])
         number_returned_by_collection = json_response.get('numberReturnedByCollection', {})
         self.assertIn('bld-fts-building-1', number_returned_by_collection)
@@ -126,3 +125,25 @@ class NGDTestCase(TestCase):
             'properties',
             'collection'
         ])
+
+    def test_invalid_key(self):
+        """
+        Test for invalid API key in the NGD API.
+        This function sends a request with an invalid key and checks the response.
+        It expects a 401 status code and specific error messages in the response.
+        """
+        endpoint = BASE_URL + 'features/lnd-fts-land-1/items'
+        response = r.get(
+            endpoint,
+            headers = {'key': 'invalid-key'},
+            timeout=GLOBAL_TIMEOUT
+        )
+        self.assertEqual(response.status_code, 401)
+        json_response = response.json()
+        self.assertDictEqual(
+            json_response,
+            {
+                "description": "Missing or unsupported API key provided.",
+                "errorSource": "OS NGD API"
+            }
+        )
