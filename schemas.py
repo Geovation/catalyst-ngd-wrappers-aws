@@ -27,6 +27,7 @@ class FeaturesBaseSchema(BaseSchema):
     '''Base schema for all queries'''
     wkt = String(required=False)
     use_latest_collection = Boolean(data_key='use-latest-collection', required=False)
+    authenticate = Boolean(required=False)
 
 class AbstractHierarchicalSchema(FeaturesBaseSchema):
     '''Abstract schema for hierarchical queries'''
