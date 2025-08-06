@@ -149,3 +149,36 @@ class NGDTestCase(TestCase):
                 "errorSource": "OS NGD API"
             }
         )
+
+    def test_latest_collections_single(self):
+
+        collection = 'lnd-fts-land'
+        endpoint = f'{BASE_URL}latest-collections/{collection}'
+        response = r.get(
+            endpoint,
+            timeout = GLOBAL_TIMEOUT
+        )
+        self.assertEqual(response.status_code, 200)
+        json_response = response.json()
+        val = json_response.get(collection)
+        self.assertIsNotNone(val)
+        self.assertTrue(val.startswith(collection))
+        self.assertFalse(val.endswith('-1'))  # Should not be the first collection
+
+    def test_latest_collections_specific(self):
+
+        endpoint = BASE_URL + 'latest-collections'
+        response = r.get(
+            endpoint,
+            params = {'latest-update-days': 28}
+            headers = {'key': KEY}, # Isn't necessary, but should be ignored
+            timeout = GLOBAL_TIMEOUT
+        )
+        self.assertEqual(response.status_code, 200)
+        json_response = response.json()
+        first_key = list(json_response)
+        self.assertListEqual(first_key, [
+            'collection-lookup',
+            'recent-update-threshold-days',
+            'recent-collection-updates'
+        ])
