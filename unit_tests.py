@@ -4,7 +4,7 @@ from unittest import TestCase
 from dotenv import load_dotenv
 load_dotenv()
 
-BASE_URL = 'https://kldsi7sxw0.execute-api.eu-west-2.amazonaws.com/prod/catalyst/'
+BASE_URL = os.environ.get('BASE_URL', '')
 KEY = os.environ.get('CLIENT_ID', '')
 GLOBAL_TIMEOUT = 20
 
@@ -16,12 +16,12 @@ class NGDTestCase(TestCase):
         This function sends a request with an unsupported query parameter and checks the response.
         It expects a 400 status code and specific error messages in the response.
         """
-        endpoint = BASE_URL + 'features/lnd-fts-land-1/items'
+        endpoint = BASE_URL + 'catalyst/features/lnd-fts-land-1/items'
         response = r.get(
             endpoint,
             params={'test': 'should-fail'},
             headers = {'key': KEY},
-            timeout=GLOBAL_TIMEOUT
+            timeout = GLOBAL_TIMEOUT
         )
         self.assertEqual(response.status_code, 400)
         json_response = response.json()
@@ -43,7 +43,7 @@ class NGDTestCase(TestCase):
                 558288 104518, 558298 104528, 558398 104328, 558398 104318
             )
         )'''
-        endpoint = BASE_URL + 'features/multi-collection/items/geom-col'
+        endpoint = BASE_URL + 'catalyst/features/multi-collection/items/geom-col'
         response = r.get(
             endpoint,
             params = {
@@ -52,13 +52,13 @@ class NGDTestCase(TestCase):
                 'crs': 3857,
                 'collection': 'lnd-fts-land,bld-fts-building,wtr-fts-water',
                 'hierarchical-output': True,
-                'use-latest-collection': True,
+                'use-latest-collection': True
             },
             headers = {
                 'erroneous-header': 'should-be-ignored',
                 'key': KEY
             },
-            timeout=GLOBAL_TIMEOUT
+            timeout = GLOBAL_TIMEOUT
         )
         self.assertEqual(response.status_code, 200)
         json_response = response.json()
@@ -84,7 +84,7 @@ class NGDTestCase(TestCase):
         ])
 
     def test_flat_request(self):
-        endpoint = BASE_URL + 'features/multi-collection/items/limit-col'
+        endpoint = BASE_URL + 'catalyst/features/multi-collection/items/limit-col'
         response = r.get(
             endpoint,
             params = {
@@ -92,9 +92,10 @@ class NGDTestCase(TestCase):
                 'collection': 'gnm-fts-crowdsourcednamepoint,bld-fts-building-1,trn-ntwk-pathlink',
                 'use-latest-collection': True,
                 'limit': 213,
-                'key': KEY
+                'key': KEY,
+                'authenticate': False
             },
-            timeout=GLOBAL_TIMEOUT
+            timeout = GLOBAL_TIMEOUT
         )
         self.assertEqual(response.status_code, 200)
         json_response = response.json()
@@ -132,11 +133,12 @@ class NGDTestCase(TestCase):
         This function sends a request with an invalid key and checks the response.
         It expects a 401 status code and specific error messages in the response.
         """
-        endpoint = BASE_URL + 'features/lnd-fts-land-1/items'
+        endpoint = BASE_URL + 'catalyst/features/lnd-fts-land-1/items'
         response = r.get(
             endpoint,
+            params = {'authenticate': 'false'},
             headers = {'key': 'invalid-key'},
-            timeout=GLOBAL_TIMEOUT
+            timeout = GLOBAL_TIMEOUT
         )
         self.assertEqual(response.status_code, 401)
         json_response = response.json()
