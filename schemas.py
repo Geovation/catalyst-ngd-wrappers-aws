@@ -43,7 +43,7 @@ class GeomSchema(AbstractHierarchicalSchema):
 
 class ColSchema(AbstractHierarchicalSchema):
     '''col is a list of collections to query'''
-    collection = List(String(), required=True)
+    collection = String(required=True)
 
 class LimitGeomSchema(LimitSchema, GeomSchema):
     '''Combining Limit and Geom schemas'''
