@@ -175,6 +175,8 @@ class NGDTestCase(TestCase):
         self.assertFalse(val.endswith('-1'))  # Should not be the first collection
 
     def test_latest_collections(self):
+        '''Test for retrieving the latest collections.
+        Tests that the response is in the expected format and contains the expected keys.'''
 
         endpoint = BASE_URL + 'catalyst/latest-collections'
         response = r.get(
