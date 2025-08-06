@@ -153,7 +153,7 @@ class NGDTestCase(TestCase):
     def test_latest_collections_single(self):
 
         collection = 'lnd-fts-land'
-        endpoint = f'{BASE_URL}latest-collections/{collection}'
+        endpoint = f'{BASE_URL}catalyst/latest-collections/{collection}'
         response = r.get(
             endpoint,
             timeout = GLOBAL_TIMEOUT
@@ -167,10 +167,10 @@ class NGDTestCase(TestCase):
 
     def test_latest_collections_specific(self):
 
-        endpoint = BASE_URL + 'latest-collections'
+        endpoint = BASE_URL + 'catalyst/latest-collections'
         response = r.get(
             endpoint,
-            params = {'latest-update-days': 28}
+            params = {'latest-update-days': 28},
             headers = {'key': KEY}, # Isn't necessary, but should be ignored
             timeout = GLOBAL_TIMEOUT
         )
