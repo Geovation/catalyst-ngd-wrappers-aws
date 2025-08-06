@@ -165,12 +165,12 @@ class NGDTestCase(TestCase):
         self.assertTrue(val.startswith(collection))
         self.assertFalse(val.endswith('-1'))  # Should not be the first collection
 
-    def test_latest_collections_specific(self):
+    def test_latest_collections(self):
 
         endpoint = BASE_URL + 'catalyst/latest-collections'
         response = r.get(
             endpoint,
-            params = {'latest-update-days': 28},
+            params = {'recent-update-days': 28},
             headers = {'key': KEY}, # Isn't necessary, but should be ignored
             timeout = GLOBAL_TIMEOUT
         )
