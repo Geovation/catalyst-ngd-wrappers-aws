@@ -32,6 +32,7 @@ graph TD
 - **OAuth2 Environment Variables**
     - If CLIENT_ID and CLIENT_SECRET are set as environment variables, the API handles OAuth2 authentication automatically, generating and reusing access tokens until they expire.
     - CLIENT_ID should be set as the Project API Key value, and CLIENT_SECRET should be set as the Project API Secret value
+    - The variables can be set under the Configuration tab of the Lambda function console
 
 ## Request Specifications
 - **Path Parameters**
@@ -64,8 +65,10 @@ graph TD
     - **hierarchical-output**: bool, default False - If True, then results are returned in a hierarchical structure of GeoJSONs according to collection and/or search area, when the _col_ and _geom_ extensions are applied respectively.
     If False, results are returned as a single GeoJSON.
         - _geom_ and _col_ extensions only.
-    - **collections**: str (accepts multiple values)
+    - **collection**: str
+        - accepts multiple values as a list. eg: _collection=bld-fts-building-4,bld-fts-buildingaccesslocation-1,trn-ntwk-street-1_
         - _col_ extension only.
+    - **authenticate**: bool, default True - if True, then request authentication is handled automatically through environment variables (you must configure these in the AWS Lambda console).
 
 ## Response Specifications
 - **Format**
