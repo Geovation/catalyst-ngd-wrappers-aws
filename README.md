@@ -65,7 +65,8 @@ graph TD
     - **hierarchical-output**: bool, default False - If True, then results are returned in a hierarchical structure of GeoJSONs according to collection and/or search area, when the _col_ and _geom_ extensions are applied respectively.
     If False, results are returned as a single GeoJSON.
         - _geom_ and _col_ extensions only.
-    - **collections**: str (accepts multiple values)
+    - **collection**: str
+        - accepts multiple values as a list. eg: _collection=bld-fts-building-4,bld-fts-buildingaccesslocation-1,trn-ntwk-street-1_
         - _col_ extension only.
     - **authenticate**: bool, default True - if True, then request authentication is handled automatically through environment variables (you must configure these in the AWS Lambda console).
 
