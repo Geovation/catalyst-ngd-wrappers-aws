@@ -1,6 +1,6 @@
 import os
-import requests as r
 from unittest import TestCase
+import requests as r
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -9,6 +9,7 @@ KEY = os.environ.get('CLIENT_ID', '')
 GLOBAL_TIMEOUT = 20
 
 class NGDTestCase(TestCase):
+    '''Base class for NGD wrapper API tests.'''
 
     def test_invalid_query_params(self):
         """
@@ -33,6 +34,9 @@ class NGDTestCase(TestCase):
         self.assertEqual(json_response.get('errorSource', ''), 'OS NGD API')
 
     def test_hiearchical_request(self):
+        ''' Test for a hierarchical request to the NGD API.
+        A more complex request making use of various features.
+        Various checks that the response is in the expected format.'''
         wkt = '''
         GEOMETRYCOLLECTION(
             MULTIPOLYGON(
@@ -84,6 +88,9 @@ class NGDTestCase(TestCase):
         ])
 
     def test_flat_request(self):
+        """Test for a non-hierarchical request to the NGD API.
+        Various checks that the response is in the expected format.
+        Includes handling of a mixture of version-specified and non-versioned collections with 'use-latest-collection'"""
         endpoint = BASE_URL + 'catalyst/features/multi-collection/items/limit-col'
         response = r.get(
             endpoint,
@@ -128,11 +135,11 @@ class NGDTestCase(TestCase):
         ])
 
     def test_invalid_key(self):
-        """
+        '''
         Test for invalid API key in the NGD API.
         This function sends a request with an invalid key and checks the response.
         It expects a 401 status code and specific error messages in the response.
-        """
+        '''
         endpoint = BASE_URL + 'catalyst/features/lnd-fts-land-1/items'
         response = r.get(
             endpoint,
@@ -151,6 +158,8 @@ class NGDTestCase(TestCase):
         )
 
     def test_latest_collections_single(self):
+        ''' Test for retrieving the latest collection for a specific collection type.
+        Tests that the response is in the expected format'''
 
         collection = 'lnd-fts-land'
         endpoint = f'{BASE_URL}catalyst/latest-collections/{collection}'
