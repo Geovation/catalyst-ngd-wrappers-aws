@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - main
+      - feat/autorun-unit-tests
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
 
@@ -55,3 +55,7 @@ jobs:
 
       - name: Update Lambda Function
         run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda-deployment.zip
+
+      - name: Run Unit Tests
+        run: |
+          python -m unittest discover -s unit_tests
