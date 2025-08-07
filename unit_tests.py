@@ -38,7 +38,6 @@ class NGDTestCase(TestCase):
             headers = {'key': KEY},
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 400)
         json_response = response.json()
         keys = json_response.keys()
         self.assertIn('description', keys)
@@ -46,6 +45,7 @@ class NGDTestCase(TestCase):
         startswith_text = 'Not supported query parameter(s): test. Supported NGD parameters are:'
         self.assertTrue(json_response.get('description', '').startswith(startswith_text))
         self.assertEqual(json_response.get('errorSource', ''), 'OS NGD API')
+        self.assertEqual(response.status_code, 400)
 
     def test_hiearchical_request(self):
         ''' Test for a hierarchical request to the NGD API.
@@ -78,7 +78,6 @@ class NGDTestCase(TestCase):
             },
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
         json_response = response.json()
         response_keys = list(json_response.keys())
         self.assertEqual(len(response_keys), 3)
@@ -100,6 +99,7 @@ class NGDTestCase(TestCase):
             'telemetryData',
             'searchAreaNumber'
         ])
+        self.assertEqual(response.status_code, 200)
 
     def test_flat_request(self):
         """Test for a non-hierarchical request to the NGD API.
@@ -118,7 +118,6 @@ class NGDTestCase(TestCase):
             },
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
         json_response = response.json()
         response_keys = list(json_response.keys())
         self.assertListEqual(response_keys, [
@@ -147,6 +146,7 @@ class NGDTestCase(TestCase):
             'properties',
             'collection'
         ])
+        self.assertEqual(response.status_code, 200)
 
     def test_invalid_key(self):
         '''
@@ -161,7 +161,6 @@ class NGDTestCase(TestCase):
             headers = {'key': 'invalid-key'},
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 401)
         json_response = response.json()
         self.assertDictEqual(
             json_response,
@@ -170,6 +169,7 @@ class NGDTestCase(TestCase):
                 "errorSource": "OS NGD API"
             }
         )
+        self.assertEqual(response.status_code, 401)
 
     def test_latest_collections_single(self):
         ''' Test for retrieving the latest collection for a specific collection type.
@@ -181,12 +181,12 @@ class NGDTestCase(TestCase):
             endpoint,
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
         json_response = response.json()
         val = json_response.get(collection)
         self.assertIsNotNone(val)
         self.assertTrue(val.startswith(collection))
         self.assertFalse(val.endswith('-1'))  # Should not be the first collection
+        self.assertEqual(response.status_code, 200)
 
     def test_latest_collections(self):
         '''Test for retrieving the latest collections.
@@ -199,7 +199,6 @@ class NGDTestCase(TestCase):
             headers = {'key': KEY}, # Isn't necessary, but should be ignored
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
         json_response = response.json()
         first_key = list(json_response)
         self.assertListEqual(first_key, [
@@ -207,3 +206,4 @@ class NGDTestCase(TestCase):
             'recent-update-threshold-days',
             'recent-collection-updates'
         ])
+        self.assertEqual(response.status_code, 200)
