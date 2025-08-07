@@ -5,7 +5,6 @@ on:
       - feat/autorun-run-unit-tests
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
-  BASE_URL: ${{ secrets.AWS_BASE_URL }}
 
 jobs:
   deploy_lambda:
@@ -60,7 +59,7 @@ jobs:
       - name: Run Unit Tests
         env:
           BASE_URL: ${{ secrets.AWS_BASE_URL }}
-          CLIENT_ID: ${{ secrets.AWS_CLIENT_ID }}
+          CLIENT_ID: ${{ secrets.OS_DATAHUB_CLIENT_ID }}
         run: |
           pip install requests==2.32.4
           pip install python-dotenv==1.1.1
