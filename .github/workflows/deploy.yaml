@@ -60,6 +60,7 @@ jobs:
       - name: Run Unit Tests
         env:
           BASE_URL: ${{ secrets.AWS_BASE_URL }}
+          CLIENT_ID: ${{ secrets.AWS_CLIENT_ID }}
         run: |
           pip install requests==2.32.4
           pip install python-dotenv==1.1.1
