@@ -38,7 +38,7 @@ jobs:
 
       - name: Add Lambda Function Code to Zip
         run: |
-          zip -u lambda-deployment.zip lambda_function.py schemas.py utils.py
+          zip -u lambda-deployment.zip lambda_function.py unit_tests.py
 
       - name: Save Lambda Deployment Zip as artifact
         uses: actions/upload-artifact@v4
@@ -58,4 +58,4 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          python -m unittest discover -s unit_tests
+          python -m unittest discover unit_tests
