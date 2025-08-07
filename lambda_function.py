@@ -3,10 +3,10 @@ import json
 from catalyst_ngd_wrappers import items, items_limit, items_geom, \
     items_col, items_limit_geom, items_limit_col, items_geom_col, items_limit_geom_col
 
-from catalyst_ngd_wrappers.utils import BaseSerialisedRequest, handle_error, construct_features_response, \
+from catalyst_ngd_wrappers.deployment_utils import BaseSerialisedRequest, handle_error, construct_features_response, \
     construct_collections_response
 
-from catalyst_ngd_wrappers.schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
+from catalyst_ngd_wrappers.deployment_schemas import FeaturesBaseSchema, LimitSchema, GeomSchema, ColSchema, \
     LimitGeomSchema, LimitColSchema, GeomColSchema, LimitGeomColSchema
 
 AWS_HEADERS = [
