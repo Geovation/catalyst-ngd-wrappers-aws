@@ -89,6 +89,6 @@ jobs:
 
       - name: Run Unit Tests
         env:
-          BASE_URL: ${{ secrets.AZURE_BASE_URL }}
+          BASE_URL: ${{ secrets.AWS_BASE_URL }}
           CLIENT_ID: ${{ secrets.OS_DATAHUB_CLIENT_ID }}
         run: python -m unittest unit_tests
