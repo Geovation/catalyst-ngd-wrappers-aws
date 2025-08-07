@@ -5,6 +5,7 @@ on:
       - feat/autorun-run-unit-tests
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
+  BASE_URL: ${{ secrets.AWS_BASE_URL }}
 
 jobs:
   deploy_lambda:
@@ -57,6 +58,8 @@ jobs:
         run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda-deployment.zip
 
       - name: Run Unit Tests
+        env:
+          BASE_URL: ${{ secrets.AWS_BASE_URL }}
         run: |
           pip install requests==2.32.4
           pip install python-dotenv==1.1.1
