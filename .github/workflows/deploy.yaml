@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - main
+      - dev/subdividing-github0action
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
 
@@ -25,11 +25,6 @@ jobs:
         run: |
           pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade shapely -t lambda
           pip install --platform manylinux2014_x86_64 --implementation cp --python-version ${{ env.PYTHON_VERSION }} --only-binary=:all: --upgrade -r requirements.txt -t lambda
-
-      - name: Set up virtual environment
-        run: python -m venv venv
-      - name: Activate virtual environment
-        run: source venv/bin/activate
 
       - name: Package lib dependencies into Lambda Deployment Zip
         run: |
