@@ -11,6 +11,22 @@ GLOBAL_TIMEOUT = 20
 class NGDTestCase(TestCase):
     '''Base class for NGD wrapper API tests.'''
 
+    def test_filter_combos(self):
+        '''Test for the handling of a combination of "WKT" and "filter"'''
+        endpoint = BASE_URL + 'catalyst/features/lnd-fts-land-3/items/'
+        response = r.get(
+            endpoint,
+            params = {
+                'wkt': '''POLYGON (
+                    (-0.10219 51.52429, -0.10192 51.52389, -0.10095 51.52407, -0.10169 51.52463, -0.10219 51.52429)
+                )''',
+                'filter': "buildinguse_oslandusetiera IN ('Residential Accommodation','Commercial Activity: Other')",
+                'log-request-details': True
+            },
+            timeout = GLOBAL_TIMEOUT
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_invalid_query_params(self):
         """
         Test for invalid query parameters in the NGD API.
