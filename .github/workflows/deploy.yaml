@@ -38,7 +38,7 @@ jobs:
 
       - name: Add Lambda Function Code to Zip
         run: |
-          zip -u lambda-deployment.zip lambda_function.py schemas.py utils.py
+          zip -u lambda-deployment.zip lambda_function.py unit_tests.py
 
       - name: Save Lambda Deployment Zip as artifact
         uses: actions/upload-artifact@v4
@@ -55,3 +55,12 @@ jobs:
 
       - name: Update Lambda Function
         run: aws lambda update-function-code --function-name=catalyst_ngd_wrappers --zip-file=fileb://lambda-deployment.zip
+
+      - name: Run Unit Tests
+        env:
+          BASE_URL: ${{ secrets.AWS_BASE_URL }}
+          CLIENT_ID: ${{ secrets.OS_DATAHUB_CLIENT_ID }}
+        run: |
+          pip install requests==2.32.4
+          pip install python-dotenv==1.1.1
+          python -m unittest unit_tests

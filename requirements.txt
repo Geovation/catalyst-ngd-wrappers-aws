@@ -1,5 +1,4 @@
 requests==2.32.4
 marshmallow==3.24.1
-aws_lambda_typing==2.20.0
 python-dotenv==1.1.1
 git+https://github.com/Geovation/catalyst-ngd-wrappers-python.git

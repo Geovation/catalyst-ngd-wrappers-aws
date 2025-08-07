@@ -23,7 +23,7 @@ class NGDTestCase(TestCase):
             },
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.text)
 
     def test_invalid_query_params(self):
         """
@@ -38,7 +38,7 @@ class NGDTestCase(TestCase):
             headers = {'key': KEY},
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 400, response.text)
         json_response = response.json()
         keys = json_response.keys()
         self.assertIn('description', keys)
@@ -78,7 +78,7 @@ class NGDTestCase(TestCase):
             },
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.text)
         json_response = response.json()
         response_keys = list(json_response.keys())
         self.assertEqual(len(response_keys), 3)
@@ -118,7 +118,7 @@ class NGDTestCase(TestCase):
             },
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.text)
         json_response = response.json()
         response_keys = list(json_response.keys())
         self.assertListEqual(response_keys, [
@@ -161,7 +161,7 @@ class NGDTestCase(TestCase):
             headers = {'key': 'invalid-key'},
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 401, response.text)
         json_response = response.json()
         self.assertDictEqual(
             json_response,
@@ -181,7 +181,7 @@ class NGDTestCase(TestCase):
             endpoint,
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.text)
         json_response = response.json()
         val = json_response.get(collection)
         self.assertIsNotNone(val)
@@ -199,7 +199,7 @@ class NGDTestCase(TestCase):
             headers = {'key': KEY}, # Isn't necessary, but should be ignored
             timeout = GLOBAL_TIMEOUT
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200, response.text)
         json_response = response.json()
         first_key = list(json_response)
         self.assertListEqual(first_key, [
