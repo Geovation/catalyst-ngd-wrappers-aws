@@ -58,4 +58,6 @@ jobs:
 
       - name: Run Unit Tests
         run: |
+          pip install requests==2.32.4
+          pip install python-dotenv==1.1.1
           python -m unittest unit_tests
