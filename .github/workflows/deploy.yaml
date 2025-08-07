@@ -2,7 +2,7 @@ name: Deploying Lambda Function
 on:
   push:
     branches:
-      - feat/autorun-unit-tests
+      - feat/autorun-run-unit-tests
 env:
   PYTHON_VERSION: '3.13'  # Specify the Python version you want to use
 
