@@ -32,8 +32,24 @@ jobs:
         run: |
             mv lambda_function.py unit_tests.py aws_lambda_function_release/
 
-      - name: Upload release artifact
-        uses: actions/upload-artifact@v4
+      #- name: Upload release artifact
+        #uses: actions/upload-artifact@v4
+        #with:
+          #name: aws-lambda-function-release
+          #path: aws_lambda_function_release/
+
+      - name: Create release zip
+        run: |
+          cd aws_lambda_function_release
+          zip -r ../${{ github.event.release.tag_name }}-release.zip .
+          cd ..
+
+      - name: Upload assets to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: aws-lambda-function-release
-          path: aws_lambda_function_release/
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ github.event.release.tag_name }}-release.zip
+          asset_name: ${{ github.event.release.tag_name }}-release.zip
+          asset_content_type: application/zip
