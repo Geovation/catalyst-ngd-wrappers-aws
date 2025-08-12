@@ -41,7 +41,7 @@ jobs:
       - name: Create release zip
         run: |
           cd aws_lambda_function_release
-          zip -r ../${{ github.event.release.tag_name }}-release.zip .
+          zip -r ../latest-release.zip .
           cd ..
 
       - name: Upload assets to release
