@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ github.event.release.tag_name }}-release.zip
-          asset_name: ${{ github.event.release.tag_name }}-release.zip
+          asset_path: latest-release.zip
+          asset_name: latest-release.zip
           asset_content_type: application/zip
