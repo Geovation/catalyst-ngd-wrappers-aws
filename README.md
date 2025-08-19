@@ -4,7 +4,7 @@
 
 - _Subtitles specifying the naming convention and ordering for python function names, and the corresponding final component of API paths_
 - _Eg. the api url which combines the feature limit exentension, and the multiple collections extension will finish .../items/limit-col?..._
-- _The OAuth2 Manager is applied by default, if the appropriate environment variables are configured (see below)
+- The OAuth2 Manager is applied by default, if the appropriate environment variables are configured (see below)
 
 ```mermaid
 graph TD

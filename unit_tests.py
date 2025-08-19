@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_URL = os.environ.get('BASE_URL', '')
-KEY = os.environ.get('CLIENT_ID', '')
+KEY = 'YM57GQW4eAaABqG2Vz3fhALu7Knu8f4D'#os.environ.get('CLIENT_ID', '')
 GLOBAL_TIMEOUT = 20
 
 class NGDTestCase(TestCase):
