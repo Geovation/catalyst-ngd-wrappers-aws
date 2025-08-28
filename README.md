@@ -1,5 +1,11 @@
 # API Documentation
 
+This repository enables the deployment of Geovation Catalyst NGD Wrapper resources on Amazon Web Services (AWS).
+
+- For a process for automatically deploying the API and all the associated required AWS resources, refer to the docs on the [catalyst-deployment repository](https://github.com/Geovation/catalyst-deployment).
+- For the python package underlying the functionality of this deployment, see [catalyst-ngd-wrappers-python](https://github.com/Geovation/catalyst-ngd-wrappers-python).
+- For the correspond deployment tools for Azure, see [catalyst-ngd-wrappers-azure](https://github.com/Geovation/catalyst-ngd-wrappers-azure).
+
 ***Chart specifying valid orders to "chain" different wrapper functions/extensions together***
 
 - _Subtitles specifying the naming convention and ordering for python function names, and the corresponding final component of API paths_
