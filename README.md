@@ -2,7 +2,7 @@
 
 This repository enables the deployment of Geovation Catalyst NGD Wrapper resources on Amazon Web Services (AWS).
 
-- For a process for automatically deploying the API and all the associated required AWS resources, refer to the docs on the [catalyst-deployment repository](https://github.com/Geovation/catalyst-deployment).
+- A template for automatically deploying the API and all the associated required AWS resources can be found at our [catalyst-deployment repository](https://github.com/Geovation/catalyst-deployment).
 - For the python package underlying the functionality of this deployment, see [catalyst-ngd-wrappers-python](https://github.com/Geovation/catalyst-ngd-wrappers-python).
 - For the correspond deployment tools for Azure, see [catalyst-ngd-wrappers-azure](https://github.com/Geovation/catalyst-ngd-wrappers-azure).
 
@@ -140,3 +140,16 @@ graph TD
 - catalyst/features/multi-collection/items/limit-col
 - catalyst/features/multi-collection/items/geom-col
 - catalyst/features/multi-collection/items/limit-geom-col
+
+## Testing with unit_tests.py
+
+Once you have deployed the API, you can test the outputs using unit_tests.py.
+
+```python -m unittest unit_tests.py```
+
+You must make sure that the following [environment variables are configured correctly](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) in the Lambda function environment. If you have used our [deployment template](https://github.com/Geovation/catalyst-deployment), then these environment variables will be configured automatically.
+
+- CLIENT_ID = <your-datahub-project-key>
+- ROOT_URL = 'https://<your-ngd-wrapper-runction-name>.azurewebsites.net/api'
+
+If any issues arise in this process, then please raise an issue to let us know. We welcome any feedback.
