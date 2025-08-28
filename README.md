@@ -8,8 +8,8 @@
 
 ```mermaid
 graph TD
-    X[Basic Request Wrapper] --> A[OAuth2_manager]
-    A[OAuth2 Manager] --> B[feature_limit_extension<br><em>limit</em>]
+    X[Basic Request Wrapper] --> A[OAuth2 Manager (automatic)]
+    A --> B[Feature Limit Extension<br><em>limit</em>]
     A --> C[Multigeometry Search Extension<br><em>geom</em>]
     A --> D[Multiple Collections Extension<br><em>col</em>]
     B --> C
@@ -122,7 +122,7 @@ graph TD
 
 ## Available endpoints resulting from extension combinations
 
-- Make sure to prefix the endpoints below with your AWS Host and Stage URL.
+- Make sure to prefix the endpoints below with your AWS Host and Stage URL. If deployed through [cataly-deployment](https://github.com/Geovation/catalyst-deployment), the Invoke URL can be found under the CloudFormation 'outputs' tab. Otherwise, it can be found under 'stages'>'Stage details' of the API resource in the [API Gateway console](https://eu-west-2.console.aws.amazon.com/apigateway).
 
 - catalyst/latest-collections
 - catalyst/latest-collections/{collectionId}
