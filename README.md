@@ -150,6 +150,6 @@ Once you have deployed the API, you can test the outputs using unit_tests.py.
 You must make sure that the following [environment variables are configured correctly](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) in the Lambda function environment. If you have used our [deployment template](https://github.com/Geovation/catalyst-deployment), then these environment variables will be configured automatically.
 
 - CLIENT_ID = <your-datahub-project-key>
-- ROOT_URL = 'https://<your-ngd-wrapper-runction-name>.azurewebsites.net/api'
+- ROOT_URL = 'https://<your-ngd-wrapper-function-name>.azurewebsites.net/api'
 
 If any issues arise in this process, then please raise an issue to let us know. We welcome any feedback.
